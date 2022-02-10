@@ -1,8 +1,31 @@
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 import { useState } from "react";
 
 export default function Home() {
 	const [amount, setAmount] = useState<number | null>(200);
 	const defaultAmounts = [200, 500, 1000];
+	const stripePromise = loadStripe(
+		process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!
+	);
+
+	const createCheckOutSession = async () => {
+		const stripe = await stripePromise;
+		const checkoutSession = await axios.post(
+			"/api/create-checkout-session",
+			{
+				amount: amount,
+			}
+		);
+
+		const result = await stripe?.redirectToCheckout({
+			sessionId: checkoutSession.data.id,
+		});
+
+		if (result?.error) {
+			alert(result?.error.message);
+		}
+	};
 
 	return (
 		<div className="flex h-screen w-screen items-center justify-evenly bg-slate-900 p-10">
@@ -43,7 +66,10 @@ export default function Home() {
 						</button>
 					))}
 				</div>
-				<button className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400 ">
+				<button
+					onClick={createCheckOutSession}
+					className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400 "
+				>
 					<span>Sponsor</span>
 				</button>
 			</div>
