@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 const URL =
 	process.env.NODE_ENV === "development"
 		? "http://localhost:3000"
-		: "";
+		: "https://sponser-site-jitendra3018.vercel.app/";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { amount } = req.body;
