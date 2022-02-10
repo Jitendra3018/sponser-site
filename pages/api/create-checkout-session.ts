@@ -1,7 +1,10 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 import { NextApiRequest, NextApiResponse } from "next";
 
-const URL = "http://localhost:3000";
+const URL =
+	process.env.NODE_ENV === "development"
+		? "http://localhost:3000"
+		: "";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const { amount } = req.body;
@@ -11,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			price_data: {
 				currency: "inr",
 				product_data: {
-					name: `Sponsoring Avneesh`,
+					name: `Sponsoring Jitendra`,
 				},
 				unit_amount: amount * 100,
 			},
