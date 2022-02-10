@@ -2,6 +2,8 @@ import { useState } from "react";
 
 export default function Home() {
 	const [amount, setAmount] = useState<number | null>(200);
+	const defaultAmounts = [200, 500, 1000];
+
 	return (
 		<div className="flex h-screen w-screen items-center justify-evenly bg-slate-900 p-10">
 			<div className="w-1/2">
@@ -25,6 +27,21 @@ export default function Home() {
 						value={amount ? amount : ""}
 						onChange={(e) => setAmount(parseInt(e.target.value))}
 					/>
+				</div>
+				<div className="flex w-full items-center space-x-2">
+					{defaultAmounts.map((buttonAmount) => (
+						<button
+							className={`${
+								amount === buttonAmount
+									? "bg-cyan-300"
+									: "bg-gray-300"
+							}  rounded-full px-6 py-3 transition duration-200`}
+							onClick={() => setAmount(buttonAmount)}
+							key={buttonAmount}
+						>
+							₹{buttonAmount}
+						</button>
+					))}
 				</div>
 				<button className="w-full rounded-lg bg-cyan-300 py-3 text-xl font-semibold hover:bg-cyan-400 ">
 					<span>Sponsor</span>
